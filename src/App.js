@@ -1,5 +1,5 @@
 import {BrowserRouter as Router,Route,Link,Switch } from 'react-router-dom'
-import Home from './pages/Layout'
+import Home from 'pages/Layout'
 import Login from 'pages/Login'
 const App = () => {
   return <Router>
