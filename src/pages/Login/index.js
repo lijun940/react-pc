@@ -3,12 +3,35 @@ import { Form, Input, Button, Checkbox, message, Card } from "antd";
 
 import "./index.scss";
 import logo from "../../assets/images/logo.png";
+import request from 'utils/request';
+import { login } from "api/user";
 export default class Login extends Component {
+  onFinish = async ({mobile,code}) => {
+    try {
+      const res = await login(mobile,code)
+      localStorage.setItem('token', res.data.token)
+      this.props.history.push('home')
+      alert('登录成功')
+      console.log(res)
+    } catch (error) {
+      console.dir(error)
+      alert(error.response.data.message)
+      
+    }
+  }
+  
   render() {
     return (
       <div className="login">
         <Card className="login-container">
-          <Form className="login-form" size="large">
+          <Form className="login-form" size="large"
+            initialValues={{
+              mobile: '13911111111',
+              code: '246810',
+              agree: true
+            }}
+            onFinish={this.onFinish}
+          >
             <Form.Item
               name="mobile"
               // 配置表单校验规则
