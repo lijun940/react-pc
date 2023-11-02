@@ -3,32 +3,46 @@ import { Form, Input, Button, Checkbox, message, Card } from "antd";
 
 import "./index.scss";
 import logo from "../../assets/images/logo.png";
-import request from 'utils/request';
+import request from "utils/request";
 import { login } from "api/user";
 export default class Login extends Component {
-  onFinish = async ({mobile,code}) => {
+  onFinish = async ({ mobile, code }) => {
+    this.setState({
+      loading: true,
+    });
     try {
-      const res = await login(mobile,code)
-      localStorage.setItem('token', res.data.token)
-      this.props.history.push('home')
-      alert('登录成功')
-      console.log(res)
+      const res = await login(mobile, code);
+      localStorage.setItem("token", res.data.token);
+      message.success("登录成功", 1, () => {
+        this.setState({
+          loading: false,
+        });
+        this.props.history.push("home");
+      });
+      console.log(res);
     } catch (error) {
-      console.dir(error)
-      alert(error.response.data.message)
-      
+      console.dir(error);
+      message.warning(error.response.data.message, 1, () => {
+        this.setState({
+          loading: false,
+        });
+      });
     }
-  }
-  
+  };
+  state = {
+    loading: false,
+  };
   render() {
     return (
       <div className="login">
         <Card className="login-container">
-          <Form className="login-form" size="large"
+          <Form
+            className="login-form"
+            size="large"
             initialValues={{
-              mobile: '13911111111',
-              code: '246810',
-              agree: true
+              mobile: "13911111111",
+              code: "246810",
+              agree: true,
             }}
             onFinish={this.onFinish}
           >
@@ -90,6 +104,7 @@ export default class Login extends Component {
               {/* 注意：该 按钮 的类型为 submit，所以，才可以触发表单的校验、提交 */}
               {/* 是通过 htmlType="submit" 属性来指定的 */}
               <Button
+                loading={this.state.loading}
                 block
                 type="primary"
                 htmlType="submit"
