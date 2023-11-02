@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Form, Input, Button, Checkbox, message, Card } from "antd";
 
-import "./index.scss";
 import logo from "../../assets/images/logo.png";
 import request from "utils/request";
 import { login } from "api/user";
+import styles from './index.module.scss'
+import { setToken } from "utils/storage";
 export default class Login extends Component {
   onFinish = async ({ mobile, code }) => {
     this.setState({
@@ -12,12 +13,14 @@ export default class Login extends Component {
     });
     try {
       const res = await login(mobile, code);
-      localStorage.setItem("token", res.data.token);
+      setToken(res.data.token)
       message.success("登录成功", 1, () => {
         this.setState({
           loading: false,
-        });
-        this.props.history.push("home");
+        },() => {
+          this.props.history.push("home");
+        }
+        );
       });
       console.log(res);
     } catch (error) {
@@ -34,10 +37,11 @@ export default class Login extends Component {
   };
   render() {
     return (
-      <div className="login">
-        <Card className="login-container">
+      <div className={styles.login}>
+        <Card className='login-container'>
+          <img src={logo} className="login-logo" alt="" />
           <Form
-            className="login-form"
+            className="aa"
             size="large"
             initialValues={{
               mobile: "13911111111",
