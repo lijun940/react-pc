@@ -18,7 +18,14 @@ export default class Login extends Component {
         this.setState({
           loading: false,
         },() => {
-          this.props.history.push("home");
+          const {state} = this.props.location
+          if(state) {
+            this.props.history.push(state.from);
+
+          } else {
+            this.props.history.push("home");
+
+          }
         }
         );
       });

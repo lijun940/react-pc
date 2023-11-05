@@ -16,3 +16,15 @@ export const login = (mobile, code) => {
     },
   })
 }
+
+/**
+ * 获取用户信息
+ * @returns 
+ */
+export const getUserProfile = () => {
+  return request({
+    method: 'get',
+    url: '/user/profile'
+  })
+}
+
